@@ -7,7 +7,34 @@
 
     $koneksi = mysqli_connect($host, $user, $pass, $database) or die (mysqli_eror($koneksi));
 
+
+    $simpan = mysqli_query($koneksi, "INSERT INTO maba (no_daftar, nama, nik, nisn, ttl, alamat, jenis_kelamin, tahun_lulus, sekolah_asal, agama, negara, no_hp, email, nama_ayah, pk_ayah, nama_ibu, pk_ibu, gaji, jarak, transport, ttsk, prodi)
+                                              VALUES (  '$_POST[tno_daftar]',
+                                                        '$_POST[tnama]',
+                                                        '$_POST[tnik]', 
+                                                        '$_POST[tnisn]',
+                                                        '$_POST[tttl]',
+                                                        '$_POST[talamat]',
+                                                        '$_POST[tjenis_kelamin]',
+                                                        '$_POST[ttahun_lulus]',
+                                                        '$_POST[tsekolah_asal]',
+                                                        '$_POST[tagama]',
+                                                        '$_POST[tnegara]',
+                                                        '$_POST[tno_hp]',
+                                                        '$_POST[temail]',
+                                                        '$_POST[tnama_ayah]',
+                                                        '$_POST[tpk_ayah]',
+                                                        '$_POST[tnama_ibu]',
+                                                        '$_POST[tpk_ibu]',
+                                                        '$_POST[tgaji]',
+                                                        '$_POST[tjarak]',
+                                                        '$_POST[ttransport]',
+                                                        '$_POST[tttsk]', 
+                                                        '$_POST[tprodi]')
+                                        ");
     
+
+        
 ?>
 
 <!DOCTYPE html>
@@ -232,7 +259,7 @@
             <td><?=$data['transport']?></td>
             <td><?=$data['ttsk']?></td>
             <td><?=$data['prodi']?></td>
-            
+
         </tr>
         <?php endwhile; //penutup perulangan while ?>
     </table>
