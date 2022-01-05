@@ -1,8 +1,8 @@
 <?php
     //koneksi Database
-    $host = "localhost";
-    $user = "root";
-    $pass = "";
+    $host = "db4free.net";
+    $user = "bocust";
+    $pass = "bukasandi";
     $database = "dbmaba";
 
     $koneksi = mysqli_connect($host, $user, $pass, $database) or die (mysqli_eror($koneksi));
@@ -135,7 +135,17 @@
                     $vprodi = $data['prodi'];
                 }
             }
-            
+            else if ($_GET ['hal'] == "hapus")
+            {
+                //Persiapan hapus data
+                $hapus = mysqli_query($koneksi, "DELETE FROM maba WHERE id_daftar = '$_GET[id]' ");
+                if($hapus){
+                    echo "<script>
+                        alert('Hapus data Sukses!!');
+                        document.location='index.php';
+                    </script>";
+                }
+            }
         }
 ?>
 
@@ -299,7 +309,7 @@
 
     <!-- Awal Card tabel -->
     <div class="card mt-3">
-    <div class="card-header bg-dark text-white">
+    <div class="card-header bg-success text-white">
         Daftar Calon Mahasiswa Polnustar
     </div>
     <div class="card-body">
@@ -363,6 +373,8 @@
             <td><?=$data['prodi']?></td>
             <td>
                 <a href="index.php?hal=edit&id=<?=$data['id_daftar']?>" class="btn btn-warning"> Edit </a>
+                <a href="index.php?hal=hapus&id=<?=$data['id_daftar']?>" 
+                onclick="return confirm('Apakah yakin ingin menghapus data ini?')" class="btn btn-danger"> Hapus </a>
             </td>
         </tr>
         <?php endwhile; //penutup perulangan while ?>
