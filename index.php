@@ -7,8 +7,56 @@
 
     $koneksi = mysqli_connect($host, $user, $pass, $database) or die (mysqli_eror($koneksi));
 
-
-    $simpan = mysqli_query($koneksi, "INSERT INTO maba (no_daftar, nama, nik, nisn, ttl, alamat, jenis_kelamin, tahun_lulus, sekolah_asal, agama, negara, no_hp, email, nama_ayah, pk_ayah, nama_ibu, pk_ibu, gaji, jarak, transport, ttsk, prodi)
+    //jika tombol simpan diklik
+    if(isset($_POST['bsimpan']))
+    {
+        //Pengujian apakah data akan diedit atau disimpan baru
+        if($_GET['hal'] == "edit")
+        {
+            //Data akan diedit
+            $edit = mysqli_query($koneksi, "UPDATE maba set
+                                                no_daftar = '$_POST[tno_daftar]',
+                                                nama = '$_POST[tnama]',
+                                                nik = '$_POST[tnik]',
+                                                nisn = '$_POST[tnisn]',
+                                                ttl = '$_POST[tttl]',
+                                                alamat = '$_POST[talamat]',
+                                                jenis_kelamin = '$_POST[tjenis_kelamin]',
+                                                tahun_lulus = '$_POST[ttahun_lulus]',
+                                                sekolah_asal = '$_POST[tsekolah_asal]',
+                                                agama = '$_POST[tagama]',
+                                                negara = '$_POST[tnegara]',
+                                                no_hp = '$_POST[tno_hp]',
+                                                email = '$_POST[temail]',
+                                                nama_ayah = '$_POST[tnama_ayah]',
+                                                pk_ayah = '$_POST[tpk_ayah]',
+                                                nama_ibu = '$_POST[tnama_ibu]',
+                                                pk_ibu = '$_POST[tpk_ibu]',
+                                                gaji = '$_POST[tgaji]',
+                                                jarak = '$_POST[tjarak]',
+                                                transport = '$_POST[ttransport]',
+                                                ttsk = '$_POST[tttsk]',
+                                                prodi = '$_POST[tprodi]'
+                                            WHERE id_daftar = '$_GET[id]'
+                                        ");
+            if($edit) //jika edit sukses
+            {
+                echo "<script>
+                        alert('edit data Sukses');
+                        document.location='index.php';
+                    </script>";
+            }
+            else
+            {
+                echo "<script>
+                        alert('edit data Gagal!!');
+                        document.location='index.php';
+                    </script>";
+            }
+        }else
+        {
+            //Data akan disimpan baru
+            $simpan = mysqli_query($koneksi, "INSERT INTO maba (no_daftar, nama, nik, nisn, ttl, alamat, jenis_kelamin, tahun_lulus, sekolah_asal, agama, negara, no_hp, email, nama_ayah, pk_ayah, nama_ibu, pk_ibu, gaji, jarak, transport, ttsk, prodi)
                                               VALUES (  '$_POST[tno_daftar]',
                                                         '$_POST[tnama]',
                                                         '$_POST[tnik]', 
@@ -32,9 +80,63 @@
                                                         '$_POST[tttsk]', 
                                                         '$_POST[tprodi]')
                                         ");
-    
+            if($simpan) //jika simpan sukses
+            {
+                echo "<script>
+                        alert('Simpan data Sukses');
+                        document.location='index.php';
+                    </script>";
+            }
+            else
+            {
+                echo "<script>
+                        alert('Simpan data Gagal!!');
+                        document.location='index.php';
+                    </script>";
+            }
+        }
+    }
 
-        
+
+
+        //pengujian jika tombol edit atau hapus di klik
+        if(isset($_GET['hal']))
+        {
+            //pengujian jike edit data
+            if($_GET["hal"] == "edit")
+            {
+                //tampil data yang akan diedit
+                $tampil = mysqli_query($koneksi, "SELECT * FROM maba WHERE id_daftar = '$_GET[id]' ");
+                $data = mysqli_fetch_array($tampil);
+                if($data)
+                {
+                    //jika data ditemukan, maka data ditampung ke dalam variabel               
+                    $vno_daftar = $data['no_daftar'];
+                    $vnama = $data['nama'];
+                    $vnik = $data['nik'];
+                    $vnisn = $data['nisn'];
+                    $vttl = $data['ttl'];
+                    $valamat = $data['alamat'];
+                    $vjenis_kelamin = $data['jenis_kelamin'];
+                    $vtahun_lulus = $data['tahun_lulus'];
+                    $vsekolah_asal = $data['sekolah_asal'];
+                    $vagama = $data['agama'];
+                    $vnegara = $data['negara'];
+                    $vno_hp = $data['no_hp'];
+                    $vemail = $data['email'];
+                    $vnama_ayah = $data['nama_ayah'];
+                    $vpk_ayah = $data['pk_ayah'];
+                    $vnama_ibu = $data['nama_ibu'];
+                    $vpk_ibu = $data['pk_ibu'];
+                    $vgaji = $data['gaji'];
+                    $vjarak = $data['jarak'];
+                    $vtransport = $data['transport'];
+                    $vttsk = $data['ttsk'];
+                    $vprodi = $data['prodi'];
+                }
+            }
+            
+        }
 ?>
 
 <!DOCTYPE html>
@@ -197,7 +299,7 @@
 
     <!-- Awal Card tabel -->
     <div class="card mt-3">
-    <div class="card-header bg-success text-white">
+    <div class="card-header bg-dark text-white">
         Daftar Calon Mahasiswa Polnustar
     </div>
     <div class="card-body">
@@ -259,7 +361,9 @@
             <td><?=$data['transport']?></td>
             <td><?=$data['ttsk']?></td>
             <td><?=$data['prodi']?></td>
-
+            <td>
+                <a href="index.php?hal=edit&id=<?=$data['id_daftar']?>" class="btn btn-warning"> Edit </a>
+            </td>
         </tr>
         <?php endwhile; //penutup perulangan while ?>
     </table>
